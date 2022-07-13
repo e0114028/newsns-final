@@ -9,6 +9,11 @@ import random
 
 # Create your views here.
 
+
+def home(request):
+    return('home')
+
+
 @login_required(login_url='signin')
 def index(request):
     user_object = User.objects.get(username=request.user.username)
@@ -235,7 +240,7 @@ def signin(request):
             auth.login(request, user)
             return redirect('/')
         else:
-            messages.info(request, 'Credentials Invalid')
+            messages.info(request, '存在しません')
             return redirect('signin')
 
     else:
