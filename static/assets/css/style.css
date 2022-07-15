@@ -1539,6 +1539,9 @@ header {
           align-items: center;
   border-bottom: 1px solid #e5e7eb;
 }
+header.sticky {
+  position: fixed;
+}
 
 header .header_inner {
   display: -webkit-box;
