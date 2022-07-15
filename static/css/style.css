@@ -3229,9 +3229,10 @@ nav.breadcrumb {
 }
 
 .card-header {
-    background: #fafafa none repeat scroll 0 0;
-    border-bottom: medium none;
-    padding: 0;
+    padding: 1.25rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.09);
 }
 
 .card {
@@ -10037,4 +10038,16 @@ aside.sidebar.full-style {
     text-transform: uppercase;
 }
 
-
+.h-200px {
+    height: 200px;
+}
+.mt-n5 {
+    margin-top: -3rem !important;
+}
+.avatar {
+    width: 8rem;
+    height: 8rem;
+}
+header {
+    position: fixed;
+}
