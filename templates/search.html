@@ -2,15 +2,12 @@
 
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="ja">
-
-
 <head>
+{% block header %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="favicon.png" rel="icon" type="image/png">
-    <title>Search</title>
+    <title>{% block title %}Search{% endblock %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
@@ -18,9 +15,11 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
 </head>
 
 <body>
+{% block content %}    
             <form action="search" method="POST">
             {% csrf_token %}
             <header style="margin-top: -23px;">
@@ -39,8 +38,8 @@
 
                         <!-- <div class="header_search"> -->
                             
-                                <input type="text" name="username" placeholder="Search for username..">&nbsp; &nbsp;
-                                <button type="submit"><i class="fa fa-search fa-1x"></i></button>
+                                <!-- <input type="text" name="username" placeholder="Search for username..">&nbsp; &nbsp;
+                                <button type="submit"><i class="fa fa-search fa-1x"></i></button> -->
                             
                             <!-- <div class="icon-search">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -386,6 +385,7 @@
 
 
     <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
+{% endblock %}
 </body>
 
 

@@ -135,9 +135,9 @@ def profile(request, pk):
     user = pk
 
     if FollowersCount.objects.filter(follower=follower, user=user).first():
-        button_text = 'Unfollow'
+        button_text = 'フォロー解除'
     else:
-        button_text = 'Follow'
+        button_text = 'フォロー'
 
     user_followers = len(FollowersCount.objects.filter(user=pk))
     user_following = len(FollowersCount.objects.filter(follower=pk))
