@@ -10,17 +10,49 @@ from core.formes import RegisterForm
 from .models import Profile, Post, LikePost, FollowersCount
 from itertools import chain
 import random
-
+from PIL import Image
+import PIL.ExifTags as ExifTags
+import json
+from django.core import serializers
 
 # Create your views here.
 
+def get_gps(fname):
+    # 画像ファイルを開く --- (*1)
+    im = Image.open(fname)
+    # EXIF情報を辞書型で得る
+    exif = {
+        ExifTags.TAGS[k]: v
+        for k, v in im._getexif().items()
+        if k in ExifTags.TAGS
+    }
+
+    # GPS情報を得る --- (*2)
+    gps_tags = exif["GPSInfo"]
+    gps = {
+        ExifTags.GPSTAGS.get(t, t): gps_tags[t]
+        for t in gps_tags
+    }
+    # 緯度経度情報を得る --- (*3)
+    def conv_deg(v):
+        d = float(v[0])
+        m = float(v[1])
+        s = float(v[2])
+        return d + (m / 60.0) + (s / 3600.0)
+    lat = conv_deg(gps["GPSLatitude"])
+    lat_ref = gps["GPSLatitudeRef"]
+    if lat_ref != "N": lat = 0 - lat
+    lon = conv_deg(gps["GPSLongitude"])
+    lon_ref = gps["GPSLongitudeRef"]
+    if lon_ref != "E": lon = 0 - lon
+    return lat, lon
 
 def home(request):
     return('home')
 
-
 @login_required(login_url='signin')
 def index(request):
+
     user_object = User.objects.get(username=request.user.username)
     user_profile = Profile.objects.get(user=user_object)
 
@@ -37,6 +69,10 @@ def index(request):
         feed.append(feed_lists)
 
     feed_list = list(chain(*feed))
+
+    post_query_set = Post.objects.filter(lat__isnull=False)
+    post_json = serializers.serialize("json", post_query_set)
+    json.loads(post_json)
 
     # user suggestion starts
     all_users = User.objects.all()
@@ -63,8 +99,7 @@ def index(request):
 
     suggestions_username_profile_list = list(chain(*username_profile_list))
 
-
-    return render(request, 'index.html', {'user_profile': user_profile, 'posts':feed_list, 'suggestions_username_profile_list': suggestions_username_profile_list[:4]})
+    return render(request, 'index.html', {'user_profile': user_profile, 'posts':feed_list, 'suggestions_username_profile_list': suggestions_username_profile_list[:4], 'json_posts_for_map': post_json})
 
 @login_required(login_url='signin')
 def upload(request):
@@ -73,13 +108,12 @@ def upload(request):
         user = request.user.username
         image = request.FILES.get('image_upload')
         caption = request.POST['caption']
+        lat, lng = get_gps(image)
 
-        new_post = Post.objects.create(user=user, image=image, caption=caption)
+        new_post = Post.objects.create(user=user, image=image, lat=lat, lng=lng, caption=caption)
         new_post.save()
 
-        return redirect('/')
-    else:
-        return redirect('/')
+    return redirect('/')
 
 @login_required(login_url='signin')
 def search(request):

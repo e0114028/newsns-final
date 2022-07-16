@@ -19,33 +19,31 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     {% block header %} {% endblock %}
   </head>
 
   <title>{% block title %}{% endblock %}</title>
+  <div id="map"></div>
   <nav>
-
-
     <header class="sticky">
+      <h1>
+        <a href="/">
+          <img src="media\logo_images\logo_06.png" width="50" height="50" alt="test" />
+        </a>
+      </h1>
+      <div class="header_inner">
+        <form action="/search" method="POST">
+          {% csrf_token %}
+          <div class="left-side">
+            <!-- Logo -->
+            <div id="logo" class="uk-hidden@s">
+              <a href="home.html">
+                <b><h1 style="text-transform: uppercase">Social Book</h1></b>
+              </a>
+            </div>
 
-                <h1>
-                    <a href="/">
-                        <img src="media\logo_images\logo_06.png" width="50" height="50" alt="test">
-                        
-                    </a> 
-                </h1>
-                <div class="header_inner">
-                    <form action="/search" method="POST">
-                    {% csrf_token %}
-                    <div class="left-side" >
-                        <!-- Logo -->
-                        <div id="logo" class=" uk-hidden@s">
-                            <a href="home.html">
-                                <b><h1 style="text-transform: uppercase;">Social Book</h1></b>
-                            </a>
-                        </div>
-
-                        <!--<div class="triger" uk-toggle="target: #wrapper ; cls: sidebar-active">
+            <!--<div class="triger" uk-toggle="target: #wrapper ; cls: sidebar-active">
                             <i class="uil-bars"></i>
                         </div>-->
 
@@ -131,8 +129,6 @@
             <div class="px-4 py-3 -mx-5 -mb-4 mt-5 border-t text-sm">Your Image size Must be Maxmium 999MB</div>
           </div>
 
-
-
           <a href="#">
             <img src="{{user_profile.profileimg.url}}" class="header-avatar" alt="" />
           </a>
@@ -146,14 +142,13 @@
       </div>
     </header>
   </nav>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZg51wQOj2h-EqLi21qqL7YAJSX6NOy8E&callback=initMap&v=weekly" defer></script>
   <body>
-    <div class="mt-nav">
-        {% block content %} {% endblock %}
-    </div>
+    <div class="mt-nav">{% block content %} {% endblock %}</div>
   </body>
   <style>
     .mt-nav {
-        margin-top: 66px;
+      margin-top: 66px;
     }
   </style>
 </html>
