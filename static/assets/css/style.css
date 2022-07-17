@@ -2539,3 +2539,11 @@ header .uk-dropdown {
   }
 }
  
+/* ---------------------------------- */
+/* custom
+------------------------------------- */
+
+.post-image-wrapper img {
+  margin: auto;
+  max-height: 250px;
+}
