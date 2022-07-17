@@ -2547,3 +2547,10 @@ header .uk-dropdown {
   margin: auto;
   max-height: 250px;
 }
+
+.avatar-wrapper {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+}
