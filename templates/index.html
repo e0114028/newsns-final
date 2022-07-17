@@ -144,7 +144,7 @@
             const center = new google.maps.LatLng(Number(posts[0].fields.lat),Number(posts[0].fields.lng));
 
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 12,
+                zoom: 11,
                 center: center,
             });
 
@@ -153,6 +153,11 @@
                 const marker = new google.maps.Marker({
                     position: position,
                     map: map,
+                    icon: {
+                        url: `/media/${post.fields.image}`,
+                        size: new google.maps.Size(40, 40),
+                        scaledSize: new google.maps.Size(40, 40),
+                    }
                 });
             }
         }
