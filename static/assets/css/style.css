@@ -2554,3 +2554,7 @@ header .uk-dropdown {
   min-width: 40px;
   min-height: 40px;
 }
+
+#gps-error {
+  color: red;
+}
