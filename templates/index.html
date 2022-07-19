@@ -6,6 +6,7 @@
 
 {% block  content%}
 {% csrf_token%}
+        <div id="map"></div>
             <div class="container m-auto">
 
                 <!--<h1 class="lg:text-2xl text-lg font-extrabold leading-none text-gray-900 tracking-tight mb-5"> Feed </h1>--->
@@ -42,7 +43,7 @@
                               </div>
                             </div>
     
-                            <div uk-lightbox>
+                            <div class="post-image-wrapper" uk-lightbox>
                                 <a href="{{post.image.url}}">  
                                     <img src="{{post.image.url}}" alt="">
                                 </a>
@@ -103,7 +104,7 @@
                                 {% for suggestion in suggestions_username_profile_list %}
                                 <div class="flex items-center justify-between py-3">
                                     <div class="flex flex-1 items-center space-x-4">
-                                        <a href="/profile/{{suggestion.user}}">
+                                        <a class="avatar-wrapper" href="/profile/{{suggestion.user}}">
                                             <img src="{{suggestion.profileimg.url}}" class="bg-gray-200 rounded-full w-10 h-10">
                                         </a>
                                         <div class="flex flex-col">
@@ -112,7 +113,7 @@
                                         </div>
                                     </div>
                                     
-                                    <a href="/profile/{{suggestion.user}}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> View User </a>
+                                    <!-- <a href="/profile/{{suggestion.user}}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> View User </a> -->
                                 </div>
                                 {% endfor %}
 
@@ -144,7 +145,7 @@
             const center = new google.maps.LatLng(Number(posts[0].fields.lat),Number(posts[0].fields.lng));
 
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 12,
+                zoom: 11,
                 center: center,
             });
 
@@ -153,6 +154,11 @@
                 const marker = new google.maps.Marker({
                     position: position,
                     map: map,
+                    icon: {
+                        url: `/media/${post.fields.image}`,
+                        size: new google.maps.Size(40, 40),
+                        scaledSize: new google.maps.Size(40, 40),
+                    }
                 });
             }
         }

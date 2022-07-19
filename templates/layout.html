@@ -18,18 +18,18 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.js"></script>
+    <script src="https://kit.fontawesome.com/be933897d3.js" crossorigin="anonymous"></script>
     {% block header %} {% endblock %}
   </head>
 
   <title>{% block title %}{% endblock %}</title>
-  <div id="map"></div>
   <nav>
     <header class="sticky">
       <h1>
         <a href="/">
-          <img src="media\logo_images\logo_06.png" width="50" height="50" alt="test" />
+          <img src="/media/logo_images/logo_06.png" width="50" height="50" alt="test" />
         </a>
       </h1>
       <div class="header_inner">
@@ -82,10 +82,9 @@
 
                 <form action="upload" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
-                  <p class="my-3 leading-6">Upload pics</p>
                   <div>
-                    <input type="file" name="image_upload" />
-                    <!-- <a href="#" class="button soft-warning small"> Choose file</a> -->
+                    <input id="post-file-input" type="file" name="image_upload" />
+                    <p id="gps-error"></p>
                     <textarea class="button soft-warning small" name="caption" placeholder="caption..."></textarea>
                     <br />
                     <button class="button bg-blue-700" type="submit">Upload</button>
@@ -145,6 +144,18 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZg51wQOj2h-EqLi21qqL7YAJSX6NOy8E&callback=initMap&v=weekly" defer></script>
   <body>
     <div class="mt-nav">{% block content %} {% endblock %}</div>
+    <script type="text/javascript">
+      document.querySelector("#post-file-input").addEventListener("change", async (e) => {
+        let file = e.target.files[0];
+        let exifData = await exifr.parse(file);
+        if (exifData.hasOwnProperty("GPSLatitude")) {
+          document.getElementById("gps-error").innerHTML = "";
+        } else {
+          document.getElementById("gps-error").innerHTML =
+            '写真に位置情報が含まれていません。<span id="gps-info"><a href="https://join.biglobe.ne.jp/mobile/sim/gurashi/ios_0060" target="_blank"><i class="fa-solid fa-circle-question"></i></a></span>';
+        }
+      });
+    </script>
   </body>
   <style>
     .mt-nav {
