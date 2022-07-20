@@ -168,6 +168,7 @@ def profile(request, pk):
     follower = request.user.username
     user = pk
 
+
     if FollowersCount.objects.filter(follower=follower, user=user).first():
         button_text = 'フォロー解除'
     else:
