@@ -21,6 +21,15 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.js"></script>
     <script src="https://kit.fontawesome.com/be933897d3.js" crossorigin="anonymous"></script>
+
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>  
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+
+    <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
     {% block header %} {% endblock %}
   </head>
 
@@ -39,7 +48,7 @@
             <!-- Logo -->
             <div id="logo" class="uk-hidden@s">
               <a href="home.html">
-                <b><h1 style="text-transform: uppercase">Social Book</h1></b>
+                <b><h1 style="text-transform: uppercase">SNS</h1></b>
               </a>
             </div>
 
@@ -93,7 +102,7 @@
 
                 <!-- <a href="#" class="uk-text-muted mt-3 uk-link"
                                         uk-toggle="target: .choose-upload ;  animation: uk-animation-slide-right-small, uk-animation-slide-left-medium; queued: true">
-                                        Or Import Video </a> -->
+                                        Or Import Video aaaaaaaaa </a> -->
               </div>
 
               <div class="uk-flex uk-flex-column choose-upload" hidden>
@@ -129,13 +138,13 @@
           </div>
 
           <a href="#">
-            <img src="{{user_profile.profileimg.url}}" class="header-avatar" alt="" />
+            <img src="{{user.profile.profileimg.url}}" class="header-avatar" alt="" />
           </a>
           <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
             <ul>
               <li><a href="/settings"> アカウント設定 </a></li>
-              <li><a href="logout"> ログアウト</a></li>
-              <li><a href="{% url 'social_book:profile' model.post %}">プロフィール</a></li>
+              <li><a href="/profile/{{user.username}}"> マイページ </a></li>
+              <li><a href="/logout"> ログアウト</a></li>
             </ul>
           </div>
         </div>
