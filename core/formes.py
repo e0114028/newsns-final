@@ -3,7 +3,7 @@ import email
 import re
 from xml.dom import ValidationErr
 from django import forms
-
+from .models import Comment
 from core.models import User
 
 class RegisterForm(forms.Form):
@@ -32,3 +32,4 @@ class RegisterForm(forms.Form):
             return ValidationErr("それ使われてるよ")
 
         return username
+

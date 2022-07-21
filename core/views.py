@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from requests import request
-
 from core.formes import RegisterForm
 from .models import Profile, Post, LikePost, FollowersCount
 from itertools import chain
@@ -14,7 +13,9 @@ from PIL import Image
 import PIL.ExifTags as ExifTags
 import json
 from django.core import serializers
-
+from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
 # Create your views here.
 
 def get_gps(fname):
@@ -305,5 +306,11 @@ def logout(request):
 
 #     render(request,"signup.html",context)
 
+class MyPost(LoginRequiredMixin, ListView):
+    """自分の投稿のみ表示"""
+    model = Post
+    template_name = 'list.html'
 
-
+    def get_queryset(self):
+    #自分の投稿に限定
+        return Post.objects.filter(user=self.request.user)

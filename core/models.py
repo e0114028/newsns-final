@@ -1,3 +1,5 @@
+from operator import mod
+from xml.etree.ElementTree import Comment
 from django.db import models
 from django.contrib.auth import get_user_model
 import uuid
@@ -25,6 +27,7 @@ class Post(models.Model):
     caption = models.TextField()
     created_at = models.DateTimeField(default=datetime.now)
     no_of_likes = models.IntegerField(default=0)
+    
 
     def __str__(self):
         return self.user
@@ -42,3 +45,4 @@ class FollowersCount(models.Model):
 
     def __str__(self):
         return self.user
+
