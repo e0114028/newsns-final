@@ -39,6 +39,12 @@ class LikePost(models.Model):
     def __str__(self):
         return self.username
 
+class Comment(models.Model):
+    text = models.TextField('コメント')
+    target = models.ForeignKey(Post, on_delete=models.CASCADE,verbose_name='対象記事')
+
+
+
 class FollowersCount(models.Model):
     follower = models.CharField(max_length=100)
     user = models.CharField(max_length=100)

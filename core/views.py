@@ -1,21 +1,24 @@
 import email
-from django.shortcuts import render, redirect
+from xml.etree.ElementTree import Comment
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from requests import request
 from core.formes import RegisterForm
-from .models import Profile, Post, LikePost, FollowersCount
+from .models import Profile, Post, LikePost, FollowersCount, Comment
+from .formes import CommentCreateForm
 from itertools import chain
 import random
 from PIL import Image
 import PIL.ExifTags as ExifTags
 import json
 from django.core import serializers
-from django.views.generic import CreateView
+from django.views.generic import CreateView,ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.views import generic
+
 # Create your views here.
 
 def get_gps(fname):
@@ -50,6 +53,8 @@ def get_gps(fname):
 
 def home(request):
     return('home')
+
+
 
 @login_required(login_url = 'signin')
 def index(request):
@@ -158,6 +163,8 @@ def like_post(request):
         post.no_of_likes = post.no_of_likes-1
         post.save()
         return redirect('/')
+
+    
 
 @login_required(login_url='signin')
 def profile(request, pk):
