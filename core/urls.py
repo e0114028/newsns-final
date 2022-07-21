@@ -16,3 +16,5 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('home',views.home,name='home'),
 ]
+
+# fuckfuck

@@ -133,3 +133,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
+LOGIN_URL = "social_book:signin"
+LOGIN_REDIRECT_URL = "social_book:index"
+LOGOUT_REDIRECT_URL = "social_book:signin"

@@ -51,7 +51,7 @@ def get_gps(fname):
 def home(request):
     return('home')
 
-@login_required(login_url='signin')
+@login_required(login_url = 'signin')
 def index(request):
 
     user_object = User.objects.get(username=request.user.username)
@@ -306,12 +306,3 @@ def logout(request):
 #         new_user = User.objects.create_user(username,email,password)
 
 #     render(request,"signup.html",context)
-
-class MyPost(LoginRequiredMixin, ListView):
-    """自分の投稿のみ表示"""
-    model = Post
-    template_name = 'list.html'
-
-    def get_queryset(self):
-    #自分の投稿に限定
-        return Post.objects.filter(user=self.request.user)
