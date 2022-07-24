@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import email
 import re
 from xml.dom import ValidationErr
@@ -32,4 +32,12 @@ class RegisterForm(forms.Form):
             return ValidationErr("それ使われてるよ")
 
         return username
+
+
+#コメント作成
+    class CommentCreateForm(forms.ModelForm):
+        class Meta:
+            model = Comment
+            user = User.objects.get(username=username)
+            fields = ('text')
 
