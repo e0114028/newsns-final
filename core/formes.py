@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import email
 import re
 from xml.dom import ValidationErr
@@ -35,9 +35,9 @@ class RegisterForm(forms.Form):
 
 
 #コメント作成
-    class CommentCreateForm(forms.ModelForm):
-        class Meta:
-            model = Comment
-            user = User.objects.get(username=username)
-            fields = ('text')
+    # class CommentCreateForm(forms.ModelForm):
+    #     class Meta:
+    #         model = Comment
+    #         user = User.objects.get(username=username)
+    #         fields = ('text')
 

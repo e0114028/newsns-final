@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from requests import request
 from core.formes import RegisterForm
 from .models import Profile, Post, LikePost, FollowersCount, Comment
-from .formes import CommentCreateForm
 from itertools import chain
 import random
 from PIL import Image
