@@ -16,6 +16,8 @@ from django.core import serializers
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 # Create your views here.
 
 def get_gps(fname):
@@ -51,6 +53,7 @@ def get_gps(fname):
 def home(request):
     return('home')
 
+###### 無限スクロール反映前のindex function
 @login_required(login_url = 'signin')
 def index(request):
 
@@ -75,7 +78,6 @@ def index(request):
     post_json = serializers.serialize("json", post_query_set)
     json.loads(post_json)
 
-    # user suggestion starts
     all_users = User.objects.all()
     user_following_all = []
 
@@ -99,8 +101,75 @@ def index(request):
         username_profile_list.append(profile_lists)
 
     suggestions_username_profile_list = list(chain(*username_profile_list))
+    return render(request, 'index.html', {'user_profile': user_profile, 'posts':feed, 'suggestions_username_profile_list': suggestions_username_profile_list[:4], 'json_posts_for_map': post_json})
 
-    return render(request, 'index.html', {'user_profile': user_profile, 'posts':feed_list, 'suggestions_username_profile_list': suggestions_username_profile_list[:4], 'json_posts_for_map': post_json})
+class PostView(LoginRequiredMixin, ListView):
+# class PostView(ListView):
+    model = Post
+    template_name = 'post.html'
+    context_object_name = 'posts'
+    login_url: 'signin'
+    paginate_by = 3
+
+    def get_queryset(self):
+        user_following_list = []
+        user_following = FollowersCount.objects.filter(follower=self.request.user.username)
+        for users in user_following:
+            user_following_list.append(users.user)
+
+        query_set = Post.objects.filter(user__in=user_following_list)
+        return query_set
+
+    def get_context_data(self, **kwargs):
+        user_object = User.objects.get(username=self.request.user.username)
+        # user_profile = Profile.objects.get(user=user_object)
+
+        user_following_list = []
+        feed = []
+
+        user_following = FollowersCount.objects.filter(follower=self.request.user.username)
+
+        for users in user_following:
+            user_following_list.append(users.user)
+
+        for usernames in user_following_list:
+            feed_lists = Post.objects.filter(user=usernames)
+            feed.append(feed_lists)
+
+        feed_list = list(chain(*feed))
+
+        post_query_set = Post.objects.filter(lat__isnull=False)
+        post_json = serializers.serialize("json", post_query_set)
+        json.loads(post_json)
+
+        # user suggestion starts
+        all_users = User.objects.all()
+        user_following_all = []
+
+        for user in user_following:
+            user_list = User.objects.get(username=user.user)
+            user_following_all.append(user_list)
+        
+        new_suggestions_list = [x for x in list(all_users) if (x not in list(user_following_all))]
+        current_user = User.objects.filter(username=self.request.user.username)
+        final_suggestions_list = [x for x in list(new_suggestions_list) if ( x not in list(current_user))]
+        random.shuffle(final_suggestions_list)
+
+        username_profile = []
+        username_profile_list = []
+
+        for users in final_suggestions_list:
+            username_profile.append(users.id)
+
+        for ids in username_profile:
+            profile_lists = Profile.objects.filter(id_user=ids)
+            username_profile_list.append(profile_lists)
+
+        suggestions_username_profile_list = list(chain(*username_profile_list))
+        context = super().get_context_data(**kwargs)
+        context['suggestions_username_profile_list'] = suggestions_username_profile_list[:4]
+        context['json_posts_for_map'] = post_json
+        return context
 
 @login_required(login_url='signin')
 def upload(request):
@@ -245,10 +314,10 @@ def signup(request):
         if password == password2:
             if User.objects.filter(email=email).exists():
                 messages.info(request, 'Email Taken')
-                return redirect('signup')
+                return redirect('social_book:signup')
             elif User.objects.filter(username=username).exists():
                 messages.info(request, 'Username Taken')
-                return redirect('signup')
+                return redirect('social_book:signup')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
@@ -261,10 +330,10 @@ def signup(request):
                 user_model = User.objects.get(username=username)
                 new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
                 new_profile.save()
-                return redirect('signin')
+                return redirect('social_book:signin')
         else:
             messages.info(request, 'パスワードが違います')
-            return redirect('signup')
+            return redirect('social_book:signup')
         
     else:
         return render(request, 'signup.html')
@@ -282,7 +351,7 @@ def signin(request):
             return redirect('/')
         else:
             messages.info(request, '存在しません')
-            return redirect('signin')
+            return redirect('social_book:signin')
 
     else:
         return render(request, 'signin.html')
@@ -290,7 +359,7 @@ def signin(request):
 @login_required(login_url='signin')
 def logout(request):
     auth.logout(request)
-    return redirect('signin')
+    return redirect('social_book:signin')
 
 
 # User = get_user_model()
