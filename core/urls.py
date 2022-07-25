@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import PostView
+from .views import PostView,DetailPost
 app_name = 'social_book'
 
 urlpatterns = [
@@ -17,6 +17,7 @@ urlpatterns = [
     path('signin', views.signin, name='signin'),
     path('logout', views.logout, name='logout'),
     path('home',views.home,name='home'),
+    path('detail/<int:pk>', DetailPost.as_view(), name='detail'),
 ]
 
 # fuckfuck
