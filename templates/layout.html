@@ -81,7 +81,7 @@
             <!-- notification contents -->
             <div class="flex justify-center flex-center text-center">
               <div class="flex flex-col choose-upload text-center">
-                <div class="bg-gray-100 border-2 border-dashed flex flex-col h-24 items-center justify-center relative w-full rounded-lg">
+                <div class="bg-gray-100 border-2 border-dashed flex flex-col h-24 items-center justify-center relative w-full rounded-lg" id="preview">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
                     <path
                       d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"
@@ -93,7 +93,7 @@
                 <form action="upload" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
                   <div>
-                    <input id="post-file-input" type="file" name="image_upload" />
+                    <input id="post-file-input" type="file" name="image_upload" onchange="imgPreView(event)"/>
                     <p id="gps-error"></p>
                     <textarea class="button soft-warning small" name="caption" placeholder="コメント..."></textarea>
                     <br />
@@ -144,6 +144,7 @@
           </a>
           <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
             <ul>
+              <li>{{user.username}}</li>
               <li><a href="/settings"> アカウント設定 </a></li>
               <li><a href="/profile/{{user.username}}"> マイページ </a></li>
               <li><a href="/logout"> ログアウト</a></li>
@@ -182,11 +183,32 @@
           $(".spinner-border").hide();
         },
       });
+      function imgPreView(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        var preview = document.getElementById("preview");
+        var previewImage = document.getElementById("previewImage");
+        
+        if(previewImage != null) {
+          preview.removeChild(previewImage);
+        }
+        reader.onload = function(event) {
+          var img = document.createElement("img");
+          img.setAttribute("src", reader.result);
+          img.setAttribute("id", "previewImage");
+          preview.appendChild(img);
+        };
+        
+        reader.readAsDataURL(file);
+      }
     </script>
   </body>
   <style>
     .mt-nav {
       margin-top: 66px;
+    }
+    #previewImage {
+      height: 100px;
     }
   </style>
 </html>

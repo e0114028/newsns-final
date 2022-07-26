@@ -18,7 +18,7 @@ from django.views.generic import CreateView,ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView,DetailView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.db.models import Q
 # Create your views here.
 
 def get_gps(fname):
@@ -117,8 +117,8 @@ class PostView(LoginRequiredMixin, ListView):
         user_following = FollowersCount.objects.filter(follower=self.request.user.username)
         for users in user_following:
             user_following_list.append(users.user)
-
-        query_set = Post.objects.filter(user__in=user_following_list).order_by('-created_at')
+        print(self.request.user.username)
+        query_set = Post.objects.filter(Q(user__in=user_following_list)|Q(user=self.request.user.username)).order_by('-created_at')
         return query_set
 
     def get_context_data(self, **kwargs):

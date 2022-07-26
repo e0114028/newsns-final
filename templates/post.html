@@ -18,7 +18,7 @@
 
                         <!-- post 1-->
 
-                        {% for post in posts reversed %}
+                        {% for post in posts %}
                         <div class="bg-white shadow rounded-md infinite-item -mx-2 lg:mx-0">
     
                             <!-- post header-->
@@ -84,17 +84,17 @@
     
                         </div>
                         {% endfor %}
-    
+                        <div class="d-flex justify-content-center" style="display:none;">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
                     </div>
                     
                     {% if page_obj.has_next %}
                     <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
                     {% endif %}
-                    <div class="d-flex justify-content-center" style="display:none;">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
+                    
                     <!-- right sidebar-->
                     <div class="lg:w-5/12">
 
