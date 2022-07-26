@@ -303,10 +303,6 @@ def settings(request):
             user_profile.bio = bio
             user_profile.location = location
             user_profile.save()
-<<<<<<< HEAD
-        
-=======
->>>>>>> origin
         return redirect('social_book:settings')
     return render(request, 'setting.html', {'user_profile': user_profile})
 
