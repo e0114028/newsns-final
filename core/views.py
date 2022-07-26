@@ -16,7 +16,7 @@ import json
 from django.core import serializers
 from django.views.generic import CreateView,ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
@@ -118,7 +118,7 @@ class PostView(LoginRequiredMixin, ListView):
         for users in user_following:
             user_following_list.append(users.user)
 
-        query_set = Post.objects.filter(user__in=user_following_list)
+        query_set = Post.objects.filter(user__in=user_following_list).order_by('-created_at')
         return query_set
 
     def get_context_data(self, **kwargs):
@@ -293,6 +293,7 @@ def settings(request):
             user_profile.bio = bio
             user_profile.location = location
             user_profile.save()
+
         if request.FILES.get('image') != None:
             image = request.FILES.get('image')
             bio = request.POST['bio']
@@ -302,7 +303,10 @@ def settings(request):
             user_profile.bio = bio
             user_profile.location = location
             user_profile.save()
+<<<<<<< HEAD
         
+=======
+>>>>>>> origin
         return redirect('social_book:settings')
     return render(request, 'setting.html', {'user_profile': user_profile})
 
@@ -378,3 +382,8 @@ def logout(request):
 #         new_user = User.objects.create_user(username,email,password)
 
 #     render(request,"signup.html",context)
+
+class DetailPost(LoginRequiredMixin, DetailView):
+    """投稿詳細ページ"""
+    model = Post
+    template_name = 'detail.html'
