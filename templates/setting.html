@@ -55,6 +55,11 @@
                                 <input type="file" name="image" value="" class="shadow-none bg-gray-100">
                             </div>
                             <div class="col-span-2">
+                                <label for=""> Header Image</label>
+                                <img width="100" height="100" src="{{user_profile.headerimg.url}}" />
+                                <input type="file" name="header_image" value="" class="shadow-none bg-gray-100">
+                            </div>
+                            <div class="col-span-2">
                                 <label for="about">Bio</label>  
                                 <textarea id="about" name="bio" rows="3"  class="shadow-none bg-gray-100">{{user_profile.bio}}</textarea>
                             </div> 
@@ -62,6 +67,7 @@
                                 <label for=""> Location</label>
                                 <input type="text" name="location" value="{{user_profile.location}}" class="shadow-none bg-gray-100">
                             </div>
+                            
                             
                        </div> 
     
