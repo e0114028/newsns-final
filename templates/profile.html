@@ -27,7 +27,7 @@
 	
 	<section>
 			<div class="feature-photo">
-				<figure><img class="headerimg" src="{{user_profile.headerimg.url}}" alt=""></figure>
+				<figure><img class="headerimg" src="{{user_profile.headerimg.url}}" style="height: 300px; width: 100%;" alt=""></figure>
 				<form action="/follow" method="POST">
 					{% csrf_token %}
 					<div class="add-btn">
@@ -177,6 +177,8 @@
 	<script src="{% static 'js/script.js' %}"></script>
 	{% endblock %}
 </body>	
+<style>
+</style>
 
 
 </html>

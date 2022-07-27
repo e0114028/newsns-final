@@ -402,3 +402,33 @@ class DetailPost(LoginRequiredMixin, DetailView):
     """投稿詳細ページ"""
     model = Post
     template_name = 'detail.html'
+
+
+
+def delete_profileimg(request):
+    if request.method == "POST":
+        if "delete_profileimg" in request.POST:
+        # 以下にstart_buttonがクリックされた時の処理を書いていく
+        # UploadImageのインスタンスを取得
+            profile_profileimg = get_object_or_404(Profile, id="profileimg_id")
+    
+    # 画像ファイルの削除
+            profile_profileimg.profileimg.delete()
+            # profile_profileimg.profileimg.save()
+    
+    # レコードの削除
+            profile_profileimg.delete()
+
+            
+    if request.method == "POST":       
+        if "delete_headerimg" in request.POST:
+            # 以下にfinish_buttonがクリックされた時の処理を書いてく
+            # UploadImageのインスタンスを取得
+            profile_headerimg= get_object_or_404(Profile, id="headerimg_id")
+    
+    # 画像ファイルの削除
+            profile_headerimg.image.delete()
+            # profile_headerimg.image.save()
+    
+    # レコードの削除
+            profile_headerimg.delete()
