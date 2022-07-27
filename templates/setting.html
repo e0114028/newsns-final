@@ -1,5 +1,8 @@
-{% load static %}
+{% extends 'layout.html' %}
 
+
+{% load static %}
+<!-- 
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -14,10 +17,10 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
 
-</head>
+</head> -->
 
-<body>
 
+    {% block content %} 
 
        
 
@@ -25,7 +28,7 @@
 
             <div class="container m-auto"> 
 
-                <h1 class="text-2xl leading-none text-gray-900 tracking-tight mt-3"><a href="/">Home</a> / Account Setting for <b>{{user.username}}</b> </h1>
+                <h1 class="text-2xl leading-none text-gray-900 tracking-tight mt-3">プロフィール設定 <b>{{user.username}}</b> </h1>
                 <!-- <ul class="mt-5 -mr-3 flex-nowrap lg:overflow-hidden overflow-x-scroll uk-tab">
                     <li class="uk-active"><a href="#">General</a></li>
                     <li><a href="#">Profile</a></li>
@@ -53,14 +56,14 @@
                                 <label for=""> Profile Image</label>
                                 <img width="100" height="100" src="{{user_profile.profileimg.url}}" />
                                 <input type="file" id="f1" name="image" value="" class="shadow-none bg-gray-100">
-                                <input type="submit" name="delete_profileimg" value="削除">
+                                <input type="submit" id="f3" name="delete1" value="元に戻す" class="shadow-none bg-gray-100">
                                 <input type="button" id="btn1" value="クリア" onclick="test_1();" />
                             </div>
                             <div class="col-span-2">
                                 <label for=""> Header Image</label>
                                 <img width="100" height="100" src="{{user_profile.headerimg.url}}" />
                                 <input type="file" id="f2" name="header_image" value="" class="shadow-none bg-gray-100">
-                                <button type="submit" name="delete_headerimg" value="削除"></button>
+                                <input type="submit" id="f4" name="delete2" value="元に戻す" class="shadow-none bg-gray-100">
                                 <input type="button" id="btn2" value="クリア" onclick="test_2();" />
                             </div>
                             <div class="col-span-2">
@@ -160,7 +163,8 @@
     <script src="{% static 'assets/js/uikit.js' %}"></script>
     <script src="{% static 'assets/js/simplebar.js' %}"></script>
     <script src="{% static 'assets/js/custom.js' %}"></script>
-    <script> function test_1(){
+    <script> 
+        function test_1(){
         var obj = document.getElementById("f1");
         obj.value = "";
         }
@@ -168,10 +172,12 @@
         var obj = document.getElementById("f2");
         obj.value = "";
         }        
+        // function test_3(){
+        // var obj = document.getElementById("delete_profile")
+        // obj.value = "blank-profile-picture.png"
+        // }
         </script>
 
 
     <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
-</body>
-
-</html>
+    {% endblock %}

@@ -294,7 +294,7 @@ def settings(request):
         else:
             headerimage = request.FILES.get('header_image')
 
- 
+
         bio = request.POST['bio']
         location = request.POST['location']
 
@@ -303,25 +303,6 @@ def settings(request):
         user_profile.bio = bio
         user_profile.location = location
         user_profile.save()
-        # if request.FILES.get('image') == None:
-        #     image = user_profile.profileimg
-        #     bio = request.POST['bio']
-        #     location = request.POST['location']
-
-        #     user_profile.profileimg = image
-        #     user_profile.bio = bio
-        #     user_profile.location = location
-        #     user_profile.save()
-
-        # if request.FILES.get('image') != None:
-        #     image = request.FILES.get('image')
-        #     bio = request.POST['bio']
-        #     location = request.POST['location']
-
-        #     user_profile.profileimg = image
-        #     user_profile.bio = bio
-        #     user_profile.location = location
-        #     user_profile.save()
         return redirect('social_book:settings')
     return render(request, 'setting.html', {'user_profile': user_profile})
 
@@ -404,31 +385,20 @@ class DetailPost(LoginRequiredMixin, DetailView):
     template_name = 'detail.html'
 
 
+def delete(request):
+    user_profile = Profile.objects.get(user=request.user)
+    if request.method == 'POST':
+        if 'delete1' in request.POST:
+            # ボタン1がクリックされた場合の処理
+            if profile.profileimg is not None:
+                image = user_profile.profileimg
 
-def delete_profileimg(request):
-    if request.method == "POST":
-        if "delete_profileimg" in request.POST:
-        # 以下にstart_buttonがクリックされた時の処理を書いていく
-        # UploadImageのインスタンスを取得
-            profile_profileimg = get_object_or_404(Profile, id="profileimg_id")
-    
-    # 画像ファイルの削除
-            profile_profileimg.profileimg.delete()
-            # profile_profileimg.profileimg.save()
-    
-    # レコードの削除
-            profile_profileimg.delete()
+            user_profile.profileimg = image
+            user_profile.save()
+        return redirect('social_book:settings')
 
-            
-    if request.method == "POST":       
-        if "delete_headerimg" in request.POST:
-            # 以下にfinish_buttonがクリックされた時の処理を書いてく
-            # UploadImageのインスタンスを取得
-            profile_headerimg= get_object_or_404(Profile, id="headerimg_id")
-    
-    # 画像ファイルの削除
-            profile_headerimg.image.delete()
-            # profile_headerimg.image.save()
-    
-    # レコードの削除
-            profile_headerimg.delete()
+
+
+        # elif 'delete2' in request.POST:
+        #     # ボタン2がクリックされた場合の処理
+        #     print("aaaaaa")
